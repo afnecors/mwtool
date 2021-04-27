@@ -6,7 +6,7 @@ import commands.mw_downloader as d
 @click.group()
 def run():
     """
-    For more detailed help run "cli.py [command name] --help"
+    For more detailed help run "mwtool [command name] --help"
     """
     pass
 
