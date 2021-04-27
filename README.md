@@ -1,7 +1,7 @@
 # mwtool
 
 ## Setup
-```bash
+```console
 $ python3 -m venv env
 $ source env/bin/activate
 $ python3 -m pip install --editable .
@@ -14,7 +14,7 @@ Successfully installed click-7.1.2 mwtool
 ```
 
 ## Usage
-```bash
+```console
 $ mwtool
 Usage: mwtool [OPTIONS] COMMAND [ARGS]...
 
@@ -29,7 +29,7 @@ Commands:
 ```
 
 ## mwtool analyzer
-```bash
+```console
 $ mwtool analyzer --help
 Usage: mwtool analyzer [OPTIONS]
 
@@ -44,7 +44,7 @@ Options:
 ```
 
 ## mwtool downloader
-```bash
+```console
 $ mwtool downloader --help
 Usage: mwtool downloader [OPTIONS]
 
