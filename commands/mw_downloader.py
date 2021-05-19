@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import click
+import downloader as mwd
 
 def print_help():
     ctx = click.get_current_context()
@@ -40,31 +41,30 @@ def downloader(
     Download MediaWiki page history
     """
 
+    mwDownloader = mwd.MWDownloader()
+
     if pagename:
-        click.echo('Download pagename ' + pagename)
-        # Download the revision of the page
-        # save to a csv
+        mwDownloader.download_page(pagename)
         pass
 
     if filename:
-        click.echo('Download from file ' + filename)
-        # Check if file exists
-        # Check if file has a valid content
-        # For each title in file
-        # # download all revisions
-        # # save to csv 
+        # click.echo('Download from file ' + filename)
+        mwDownloader.dowload_from_file(filename)
         pass
 
     if top_pages:
-        click.echo('Download top_pages ' + str(top_pages) )
+        # click.echo('Download top_pages ' + str(top_pages) )
+        mwDownloader.download_top_pages(top_pages)
         pass
 
     if random_pages:
-        click.echo('Download random_pages ' + str(random_pages) )
+        # click.echo('Download random_pages ' + str(random_pages) )
+        mwDownloader.download_random_pages(random_pages)
         pass
 
     if category_pages:
-        click.echo('Download category_pages ' + category_pages)
+        # click.echo('Download category_pages ' + category_pages)
+        mwDownloader.download_from_category(category_pages)
         pass
 
     if (pagename is None and 

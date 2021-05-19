@@ -10,8 +10,8 @@ def run():
     """
     pass
 
-run.add_command(a.analyzer)
 run.add_command(d.downloader)
+run.add_command(a.analyzer)
 
 if __name__ == '__main__':
     run()

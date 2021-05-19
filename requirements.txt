@@ -1,1 +1,5 @@
 click
+mwclient
+requests
+click
+bs4
