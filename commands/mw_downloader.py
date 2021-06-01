@@ -64,6 +64,8 @@ def downloader(
 
     if category_pages:
         # click.echo('Download category_pages ' + category_pages)
+        if category_pages.startswith('Category:'):
+            category_pages = category_pages[9:]
         mwDownloader.download_from_category(category_pages)
         pass
 
