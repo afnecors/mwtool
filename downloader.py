@@ -6,6 +6,7 @@ import csv
 import os
 import calendar
 import requests
+import sys
 from bs4 import BeautifulSoup as bs
 
 CSV_FILEDS = [
@@ -28,6 +29,9 @@ CSV_FILEDS = [
 DB_PATH = './db'
 
 def get_last_revision_id_from_file(filepath):
+    """
+    Get the id of the latest revision
+    """
     with open(filepath, 'r') as csvfile:
         reader = csv.DictReader(csvfile)
         first_data = list(reader)[-1]
@@ -56,6 +60,8 @@ def save_csv(id, title, rows):
             targetrow = []
             for key in CSV_FILEDS:
                 try:
+                    # converts time.struct_time in 
+                    # seconds since the epoch
                     if key == 'timestamp':
                         time_epoch = calendar.timegm(row[key])
                         targetrow.append(time_epoch)
@@ -64,10 +70,10 @@ def save_csv(id, title, rows):
                 except KeyError:
                     targetrow.append('')
                     pass
+            # print(targetrow)
             writer.writerow(targetrow)
 
     pass
-
 
 def append_to_existing_csv(filepath, new_rows):
     # se il file esiste deve avere almeno una revision
@@ -96,18 +102,20 @@ class MWDownloader():
         self.mw_pages = MWPages()
 
     def download_page(self, pagename):
-        print('Download page ' + pagename)
+        
         page = self.mw_pages.get_page(pagename)
+        print('Download page ' + pagename + " (" + str(page.length) +" bytes)")
 
         # controlla se la pagina è già stata scaricata
         # precedentemente nella cartella /db
         filepath = DB_PATH + '/' + str(page.pageid) + '.csv'
+
         if os.path.isfile(filepath):
             # file exist
             last_rev_id = get_last_revision_id_from_file(filepath)
             revisions_to_append = page.revisions(
                 limit=500, dir='newer', prop=self.prop_revisions, startid=last_rev_id)
-
+            
             # tolgo la prima revision per evitare duplicati
             revision_list = list(revisions_to_append)[1:]
 
@@ -188,7 +196,7 @@ class MWPages(object):
         else:
             raise click.UsageError('Page not found!')
 
-    def get_random(self, number):
+    def get_random(self, number) -> list:
         """
         Get a random list of pages names
         """
@@ -199,7 +207,7 @@ class MWPages(object):
             page_names.append(page['title'])
         return page_names
 
-    def get_pages_in_cat(self, catname):
+    def get_pages_in_cat(self, catname) -> list:
         """
         Get a list of pages names in a category
         """

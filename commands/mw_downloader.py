@@ -48,24 +48,24 @@ def downloader(
         pass
 
     if filename:
-        # click.echo('Download from file ' + filename)
+        click.echo('Download pages from file ' + filename)
         mwDownloader.dowload_from_file(filename)
         pass
 
     if top_pages:
-        # click.echo('Download top_pages ' + str(top_pages) )
+        click.echo('Download top ' + str(top_pages) + ' pages')
         mwDownloader.download_top_pages(top_pages)
         pass
 
     if random_pages:
-        # click.echo('Download random_pages ' + str(random_pages) )
+        click.echo('Download ' + str(random_pages) + ' random pages')
         mwDownloader.download_random_pages(random_pages)
         pass
 
     if category_pages:
-        # click.echo('Download category_pages ' + category_pages)
         if category_pages.startswith('Category:'):
             category_pages = category_pages[9:]
+        click.echo('Download pages from Category:' + category_pages)
         mwDownloader.download_from_category(category_pages)
         pass
 
