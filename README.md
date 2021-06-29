@@ -36,13 +36,27 @@ Usage: mwtool analyzer [OPTIONS]
   Analyze MediaWiki page history
 
 Options:
-  -r, --report-csv             Generate csv report
-  -c, --chart                  Generate chart report
+  -o, --output-csv             MODE: Generate csv report
+  -d, --diagram                MODE: Generate diagram report
   -s, --start-date [%Y-%m-%d]  Start date string in following format: %Y-%m-%d
   -e, --end-date [%Y-%m-%d]    Start date string in following format:%Y-%m-%d
+  -p, --pagename TEXT          Analyses single page
+  -f, --filename PATH          Analyses pages from a file containing a list of
+                               them (one title per line)
+
+  -t, --top_pages INTEGER      Analyses pages with the most revisions
+  -r, --random_pages INTEGER   Analyses random pages
+  -c, --category_pages TEXT    Analyses a category
+  -a, --all                    Analyses all previously downloaded pages
   --help                       Show this message and exit.
 ```
 
+You must choose -o or -d mode!
+
+### Examples
+- `mwtool analyzer -o --pagename "Cat"`
+- `mwtool analyzer -o --all`
+ 
 ## mwtool downloader
 ```console
 $ mwtool downloader --help
