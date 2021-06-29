@@ -100,6 +100,7 @@ class MWDownloader():
 
     def __init__(self):
         self.mw_pages = MWPages()
+        self.list_of_downloaded_pages_ids = []
 
     def download_page(self, pagename):
         
@@ -128,6 +129,9 @@ class MWDownloader():
                 limit=500, dir='newer', prop=self.prop_revisions)
 
             save_csv(page.pageid, page.page_title, list(revisions))
+
+        # save id of downloaded page
+        self.list_of_downloaded_pages_ids.append(page.pageid)
         pass
 
     def dowload_from_file(self, filename):
@@ -159,6 +163,9 @@ class MWDownloader():
         for p in page_names:
             self.download_page(p)
         pass
+
+    def get_downloaded_pages_ids(self) -> list:
+        return [str(el) for el in self.list_of_downloaded_pages_ids]
 
     # private methods
     def __get_top_pages_names(self, limit):
