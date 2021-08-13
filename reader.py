@@ -7,8 +7,28 @@ import click
 import csv
 import os
 
+import re
+
+import mw_analysis_util
+
 
 DB_PATH = "./db"
+
+def remove_bots(revisions):
+    """
+    This function removes all revisions from a list
+    that contain 'bot' in username
+    (regex: [Bb][oO][Tt] for last three characters)
+    """
+    revisions_without_bots = []
+
+    for r in revisions:
+        username = r['user'] or r['userhidden']
+        is_bot = re.match('[Bb][oO][Tt]', username[-3:])
+        if (not bool(is_bot)):
+            revisions_without_bots.append(r)
+        
+    return revisions_without_bots
 
 class MWReader():
 
@@ -21,7 +41,6 @@ class MWReader():
         pass
 
     def analyze_files_from_pageids_list(self, pageids):
-        print('Analizzo')
         
         for id in pageids:
             self.analyze_single_file(id)
@@ -47,45 +66,43 @@ class MWReader():
         return [ f[:-4] for f in files]  
 
     def analyze_single_file(self, file_name):
-        print(file_name)
+        # print(file_name)
         self.read_csv(file_name)
-        pass
-
-    def read_csv_pageid(self, pageid):
-        pass
 
     def read_csv(self, file_name):
         pagename = ''
         revisions = []
 
         with open(DB_PATH + "/" + file_name + ".csv") as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
+            csv_reader = csv.DictReader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
-
                 # save pagename
-                if line_count == 1:
-                    pagename = row[1]
+                if line_count == 0:
+                    pagename = row['title']
                 # save revision
                 if line_count > 1:
                     revisions.append(row)
 
                 line_count += 1
                 
-            print('Page: ' + pagename + ' has ' + str(line_count) + ' revisions')
+        self.calculate_measure(revisions, pagename)
+    
 
-        self.calculate_measure(revisions)
+    def calculate_measure(self, revisions, pagename):
 
-        pass
-
-
-    def calculate_measure(self, revisions):
-        print('Calculate!\n')
-
+        revisions_nobot = remove_bots(revisions)
+        cancellation = mw_analysis_util.count_all_cancellation(revisions_nobot)
+        
         if self.chart == True:
             print('Generate chart!')
 
         if self.report_csv == True:
-            print('Generate report!')
+            # print('Generate report!')
 
-        pass
+            print(pagename)
+            print('Revision totali', len(revisions))
+            print('Revision senza bot', len(revisions_nobot))
+            print('Reverted', len(cancellation))
+            print('')
+

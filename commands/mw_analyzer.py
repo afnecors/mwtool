@@ -66,7 +66,6 @@ def analyzer(
 
     # Report e diagram sono le due modalità
     # Altrimenti stampa l'help
-
     if (output_csv == False and diagram == False):
         print_help()
 
